@@ -1,0 +1,37 @@
+plugins {
+    id 'java-gradle-plugin'
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    }
+}
+
+repositories {
+    // Use JCenter for resolving dependencies.
+    maven {
+        url = uri("https://maven.minecraftforge.net/")
+        name = 'Forge'
+    }
+}
+
+dependencies {
+    api gradleApi()
+
+    api "net.minecraftforge:ForgeAutoRenamingTool:${project.fart_version}"
+    api "net.minecraftforge:forgeflower:${project.forgeflower_version}"
+    api "org.jetbrains:annotations:${project.jetbrains_annotations_version}"
+
+    api "org.ow2.asm:asm:${project.asm_version}"
+    api "org.ow2.asm:asm-commons:${project.asm_version}"
+    api "org.ow2.asm:asm-util:${project.asm_version}"
+
+    api "commons-io:commons-io:${project.commons_io_version}"
+    api "com.google.code.gson:gson:${project.gson_version}"
+    api "com.google.guava:guava:${project.guava_version}"
+    api "commons-codec:commons-codec:${project.commons_codec_version}"
+    api "org.apache.maven:maven-artifact:${project.maven_artifact_version}"
+
+    api "org.eclipse.jgit:org.eclipse.jgit:${project.jgit_version}"
+}
