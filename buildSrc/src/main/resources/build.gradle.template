@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    maven {
+        name 'Mojang'
+        url 'https://libraries.minecraft.net/'
+    }
+    maven {
+        name 'Forge'
+        url 'https://files.minecraftforge.net/maven/'
+    }
+    mavenCentral()
+}
+
+dependencies {
+    %%dependencies%%
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}

@@ -4,6 +4,7 @@ import buildSrc.workers.JarDecompileWorker;
 import com.sun.management.OperatingSystemMXBean;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.artifacts.Configuration;
+import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.provider.MapProperty;
@@ -33,7 +34,7 @@ public abstract class DecompileJarTask extends DefaultTask {
 
     @InputFiles
     @PathSensitive(PathSensitivity.RELATIVE)
-    public abstract FileCollection getDecompileClasspath();
+    public abstract ConfigurableFileCollection getDecompileClasspath();
 
     @Nested
     @Optional

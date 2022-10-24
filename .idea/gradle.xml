@@ -14,6 +14,16 @@
           </set>
         </option>
       </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/game" />
+        <option name="gradleHome" value="C:/ProgramData/chocolatey/lib/gradle/tools/gradle-6.7" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/game" />
+          </set>
+        </option>
+      </GradleProjectSettings>
     </option>
   </component>
 </project>

@@ -43,6 +43,10 @@ public abstract class EnvironmentSetupTask extends DefaultTask {
             try (FileWriter writer = new FileWriter(outputFile)) {
                 writer.write(templateWithDependencies);
             }
+
+            final File settingsFile = getProjectDirectory().get().file("build.gradle").getAsFile();
+            if (!settingsFile.exists())
+                settingsFile.createNewFile();
         }
     }
 }

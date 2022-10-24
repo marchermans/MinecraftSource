@@ -34,4 +34,5 @@ dependencies {
     api "org.apache.maven:maven-artifact:${project.maven_artifact_version}"
 
     api "org.eclipse.jgit:org.eclipse.jgit:${project.jgit_version}"
+    api "net.minecraftforge:srgutils:${project.srgutils_version}"
 }

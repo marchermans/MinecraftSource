@@ -5,7 +5,12 @@ import com.google.gson.JsonElement;
 import groovy.lang.Closure;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.gradle.api.Action;
 import org.gradle.api.Project;
+import org.gradle.api.file.Directory;
+import org.gradle.api.file.RelativePath;
+import org.gradle.api.internal.file.RelativeFile;
+import org.gradle.api.tasks.util.PatternFilterable;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -32,7 +37,7 @@ import java.util.zip.ZipOutputStream;
 public class Utils {
     private static final boolean ENABLE_FILTER_REPOS = Boolean.parseBoolean(System.getProperty("net.minecraftforge.gradle.filter_repos", "true"));
     static final int CACHE_TIMEOUT = 1000 * 60 * 60; //1 hour, Timeout used for version_manifest.json so we dont ping their server every request.
-                                                          //manifest doesn't include sha1's so we use this for the per-version json as well.
+                                                          //manifest doesn't include sha1'patterns so we use this for the per-version json as well.
     public static final String FORGE_MAVEN = "https://maven.minecraftforge.net/";
     public static final String MOJANG_MAVEN = "https://libraries.minecraft.net/";
     public static final String BINPATCHER =  "net.minecraftforge:binarypatcher:1.+:fatjar";
@@ -144,7 +149,7 @@ public class Utils {
                     if (!overwrite)
                         continue;
 
-                    //Reading is fast, and prevents Disc wear, so check if it's equals before writing.
+                    //Reading is fast, and prevents Disc wear, so check if it'patterns equals before writing.
                     try (FileInputStream fis = new FileInputStream(out)){
                         if (IOUtils.contentEquals(zip.getInputStream(e), fis))
                             continue;
@@ -210,6 +215,36 @@ public class Utils {
         }
 
         return replaceTokens(vars, value);
+    }
+
+    public static void moveFiles(Directory source, Directory target, Action<? super PatternFilterable> filter) throws IOException {
+        final List<RelativePath> files = new ArrayList<>();
+        final List<RelativePath> directory = new ArrayList<>();
+
+        source.getAsFileTree().matching(filter).visit(details -> {
+            if (details.isDirectory()) {
+                directory.add(details.getRelativePath());
+            } else {
+                files.add(details.getRelativePath());
+            }
+        });
+
+        for (RelativePath file : files) {
+            final File sourceFile = file.getFile(source.getAsFile());
+            final File destFile = file.getFile(target.getAsFile());
+
+            destFile.getParentFile().mkdirs();
+
+            if (destFile.exists())
+                destFile.delete();
+
+            FileUtils.moveFile(sourceFile, destFile);
+        }
+
+        for (RelativePath dir : directory) {
+            final File sourceDir = dir.getFile(source.getAsFile());
+            FileUtils.deleteDirectory(sourceDir);
+        }
     }
 
     @FunctionalInterface
@@ -330,17 +365,17 @@ public class Utils {
             char c = value.charAt(x);
             if (c == '\\') {
                 if (x == value.length() - 1)
-                    throw new IllegalArgumentException("Illegal pattern (Bad escape): " + value);
+                    throw new IllegalArgumentException("Illegal patterns (Bad escape): " + value);
                 buf.append(value.charAt(++x));
             } else if (c == '{' || c ==  '\'') {
                 StringBuilder key = new StringBuilder();
                 for (int y = x + 1; y <= value.length(); y++) {
                     if (y == value.length())
-                        throw new IllegalArgumentException("Illegal pattern (Unclosed " + c + "): " + value);
+                        throw new IllegalArgumentException("Illegal patterns (Unclosed " + c + "): " + value);
                     char d = value.charAt(y);
                     if (d == '\\') {
                         if (y == value.length() - 1)
-                            throw new IllegalArgumentException("Illegal pattern (Bad escape): " + value);
+                            throw new IllegalArgumentException("Illegal patterns (Bad escape): " + value);
                         key.append(value.charAt(++y));
                     } else if (c == '{' && d == '}') {
                         x = y;

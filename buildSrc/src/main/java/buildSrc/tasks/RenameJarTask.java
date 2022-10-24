@@ -63,7 +63,7 @@ public abstract class RenameJarTask extends DefaultTask {
 
     private FileCollection getWorkerClasspath() {
         final Configuration forgeFlower = this.getProject().getConfigurations().detachedConfiguration();
-        forgeFlower.defaultDependencies(deps -> deps.add(getProject().getDependencies().create("net.minecraftforge:ForgeAutoRenamingTool:" + FART_VERSION)));
+        forgeFlower.defaultDependencies(deps -> deps.add(getProject().getDependencies().create("net.minecraftforge:ForgeAutoRenamingTool:" + FART_VERSION + ":all")));
         return forgeFlower.getIncoming().getFiles();
     }
 

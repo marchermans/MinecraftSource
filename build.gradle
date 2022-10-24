@@ -1,5 +1,9 @@
-plugins {
-}
+import buildSrc.BuildSrcPlugin
+
+apply plugin: BuildSrcPlugin.class
 
 group 'net.minecraftforge.minecraft.source'
-version '1.0-SNAPSHOT'
+
+minecraft {
+    automaticallyIncrementalFrom "1.19.2"
+}
